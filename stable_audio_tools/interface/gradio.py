@@ -4,6 +4,7 @@ import gradio as gr
 import json 
 import torch
 import torchaudio
+import devicetorch
 
 from aeiou.viz import audio_spectrogram_image
 from einops import rearrange
@@ -665,7 +666,8 @@ def create_ui(model_config_path=None, ckpt_path=None, pretrained_name=None, pret
     else:
         model_config = None
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = devicetorch.get(torch)
+    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     _, model_config = load_model(model_config, ckpt_path, pretrained_name=pretrained_name, pretransform_ckpt_path=pretransform_ckpt_path, model_half=model_half, device=device)
     
     model_type = model_config["model_type"]
